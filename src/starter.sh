@@ -12,10 +12,10 @@ main() {
 
     update_repo_lists
     install_wd
-    install_hivedog
     load_wd_module
     add_wd_module_permanently
     install_hivedog
+    install_hivedog_service
     start_hivedog_service
 
     set_completed
@@ -82,7 +82,7 @@ send_to_spinner() {
     fi
 }
 
-install_hivedog() {
+install_hivedog_service() {
     echo_log "Installting HiveDog service"
 
     if ! [[ -s ./hivedog.service ]]; then 
@@ -111,7 +111,7 @@ load_wd_module() {
     fi
 
     echo_log "Loading WatchDog module"
-    if ! modprob softdog; then
+    if ! modprobe softdog; then
         echo_red "Failed to load 'softdog' module"
         exit 1
     fi
@@ -138,7 +138,15 @@ install_hivedog() {
     fi
 
     echo_log "Installting HiveDog"
-    if ! cp -f ./hivedog.sh /usr/local/bin/hivedog
+    if ! cp -f ./hivedog.sh /usr/local/bin/hivedog; then
+        echo_red "Failed to install HiveDog"
+        exit 1
+    fi
+
+    if ! chmod 755 /usr/local/bin/hivedog; then
+        echo_red "Failed to set permissions for HiveDog"
+        exit 1
+    fi
 
 }
 
