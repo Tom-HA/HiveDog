@@ -156,7 +156,7 @@ remove_wd_module_blacklist() {
 
     for file in ${blacklist_files[@]}; do
         echo_log "Removing 'softdog' blacklist from ${file}"
-        if ! sed -i "s/blacklist softdog//" ${file} &>> ${log}
+        if ! sed -i "s/blacklist softdog//" ${file} &>> ${log}; then
             echo_red "Failed to remove 'softdog' blacklist from ${file}"
             exit 1
         fi
