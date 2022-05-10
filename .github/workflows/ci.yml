@@ -46,7 +46,7 @@ jobs:
       - name: Inject version
         shell: bash
         run: |
-          sed -i "s/version=/version=${{ steps.vars.outputs.VERSION }}" src/starter.sh
+          sed -i "s/version=/version=${{ steps.vars.outputs.VERSION }}/" src/starter.sh
            
       - name: Create hivedog archive
         run: |
