@@ -48,13 +48,13 @@ jobs:
         run: |
           sed -i "s/version=/version=${{ steps.vars.outputs.VERSION }}/" src/starter.sh
            
-      - name: Create hivedog archive
+      - name: Create Starter archive
         run: |
             cd scripts || exit 1
-            bash create_hivedog.sh
-            mv hivedog.run hivedog-${{ steps.vars.outputs.VERSION }}.run
+            bash create_starter.sh
+            mv starter.run starter-${{ steps.vars.outputs.VERSION }}.run
       
       - uses: actions/upload-artifact@v3
         with:
-          name: HiveDog
-          path: scripts/hivedog-*.run
+          name: Starter
+          path: scripts/starter-*.run
