@@ -16,6 +16,7 @@ main() {
     load_wd_module
     add_wd_module_permanently
     install_hivedog
+    start_hivedog_service
 
     set_completed
     echo_green "Starter completed"
@@ -90,7 +91,9 @@ install_hivedog() {
     fi
 
     if ! cp -f ./hivedog.service /etc/systemd/system/hivedog.service &>> ${log}; then
-        echo_red "Failed to install "
+        echo_red "Failed to install HiveDog service"
+        exit 1
+    fi
 
 }
 
@@ -141,6 +144,20 @@ install_hivedog() {
 
 set_completed() {
     echo "${version}" > ${completed_file_path}
+}
+
+start_hivedog_service() {
+    echo_log "Starting HiveDog service"
+    if ! systemctl start hivedog &>> ${log}; then
+        echo_red "Failed to start HiveDog service"
+        exit 1
+    fi
+
+    echo_log "Enabling HiveDog service"
+    if ! systemctl enable hivedog &>> ${log}; then
+        echo_red "Failed to enable HiveDog service"
+        exit 1
+    fi
 }
 
 main
