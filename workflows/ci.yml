@@ -1,0 +1,60 @@
+---
+name: Makeself
+
+env:
+  SEM_VER: "0.0.1"
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+
+  Build:
+    runs-on: ubuntu-latest
+    container: 
+      image: debian:bullseye-slim
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Install runner dependencies
+        run: |
+            apt-get update
+            apt-get install curl -y
+      
+      - name: Set variables
+        id: vars
+        shell: bash
+        run: |
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            export commit_sha=${{ github.event.pull_request.head.sha }}
+          else
+            export commit_sha=${{ github.sha }}
+          fi
+          export version=$(echo ${SEM_VER}-${commit_sha:0:7})
+          echo "::set-output name=VERSION::${version}"
+      
+      - name: Inject version
+        shell: bash
+        run: |
+          sed -i "s/version=/version=${{ steps.vars.outputs.VERSION }}" src/starter.sh
+           
+      - name: Create hivedog archive
+        run: |
+            cd scripts || exit 1
+            bash create_hivedog.sh
+            mv hivedog.run hivedog-${{ steps.vars.outputs.VERSION }}.run
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: HiveDog
+          path: scripts/hivedog-*.run
