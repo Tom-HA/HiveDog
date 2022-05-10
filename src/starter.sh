@@ -12,6 +12,7 @@ main() {
 
     update_repo_lists
     install_wd
+    remove_wd_module_blacklist
     load_wd_module
     add_wd_module_permanently
     install_hivedog
@@ -148,6 +149,18 @@ install_hivedog() {
         exit 1
     fi
 
+}
+
+remove_wd_module_blacklist() {
+    blacklist_files=($(grep -r 'blacklist softdog' /etc/modprobe.d/*.conf |awk -F ':' '{print $1}'))
+
+    for file in ${blacklist_files[@]}; do
+        echo_log "Removing 'softdog' blacklist from ${file}"
+        if ! sed -i "s/blacklist softdog//" ${file} &>> ${log}
+            echo_red "Failed to remove 'softdog' blacklist from ${file}"
+            exit 1
+        fi
+    done
 }
 
 set_completed() {
