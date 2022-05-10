@@ -111,7 +111,7 @@ load_wd_module() {
     fi
 
     echo_log "Loading WatchDog module"
-    if ! modprob softdog; then
+    if ! modprobe softdog; then
         echo_red "Failed to load 'softdog' module"
         exit 1
     fi
