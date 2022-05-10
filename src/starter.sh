@@ -143,6 +143,11 @@ install_hivedog() {
         exit 1
     fi
 
+    if ! chmod 755 /usr/local/bin/hivedog; then
+        echo_red "Failed to set permissions for HiveDog"
+        exit 1
+    fi
+
 }
 
 set_completed() {

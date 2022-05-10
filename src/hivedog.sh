@@ -17,7 +17,7 @@ is_connected() {
         return 1
     fi
 
-    retrun 0
+    return 0
 }
 
 echo_log() {
@@ -44,6 +44,7 @@ start_hivedog_checks() {
         fi
 
         (( counter++ ))
+    done
 }
 
 
