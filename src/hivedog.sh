@@ -27,8 +27,9 @@ echo_log() {
 start_hivedog_checks() {
     counter=0
     while true; do
-        if [[ ${counter} -ge 6 ]]; then
+        if [[ ${counter} -ge 12 ]]; then
             # The infinite loop in this condition will cause the watchdog to reset the system 
+            sleep 1
             continue
         fi 
 
@@ -40,10 +41,10 @@ start_hivedog_checks() {
         echo > /dev/watchdog
 
         if ! is_connected; then
-            sleep 10
+            (( counter++ ))
         fi
 
-        (( counter++ ))
+        sleep 5
     done
 }
 
