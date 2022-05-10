@@ -12,10 +12,10 @@ main() {
 
     update_repo_lists
     install_wd
-    install_hivedog
     load_wd_module
     add_wd_module_permanently
     install_hivedog
+    install_hivedog_service
     start_hivedog_service
 
     set_completed
@@ -82,7 +82,7 @@ send_to_spinner() {
     fi
 }
 
-install_hivedog() {
+install_hivedog_service() {
     echo_log "Installting HiveDog service"
 
     if ! [[ -s ./hivedog.service ]]; then 
