@@ -138,7 +138,10 @@ install_hivedog() {
     fi
 
     echo_log "Installting HiveDog"
-    if ! cp -f ./hivedog.sh /usr/local/bin/hivedog
+    if ! cp -f ./hivedog.sh /usr/local/bin/hivedog; then
+        echo_red "Failed to install HiveDog"
+        exit 1
+    fi
 
 }
 
